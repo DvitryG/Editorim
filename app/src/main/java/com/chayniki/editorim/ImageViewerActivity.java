@@ -42,12 +42,11 @@ public class ImageViewerActivity extends AppCompatActivity {
 
     public void onClickEditImage(View view) {
         Intent intent  = new Intent(this, ImageEditorActivity.class);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivity(intent);
     }
 
     public void onClickBack(View view) {
-        Intent intent  = new Intent(this, MainActivity.class);
+        Intent intent  = new Intent(this, ImageGalleryActivity.class);
         startActivity(intent);
     }
 
