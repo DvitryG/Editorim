@@ -36,12 +36,12 @@ public class ImageViewerActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
     public void onClickEditImage(View view) {
-        Intent intent  = new Intent(this, ImageEditorActivity.class);
+        final Intent intent = new Intent(this, ImageEditorActivity.class);
+        intent.putExtra("imageUri", imageUri.toString());
         startActivity(intent);
     }
 
