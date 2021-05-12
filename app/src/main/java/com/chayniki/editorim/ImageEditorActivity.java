@@ -22,6 +22,7 @@ public class ImageEditorActivity extends AppCompatActivity {
     private Fragment[] fragments;
     ImageView imageView;
     private Bitmap sourceBitmap;
+    public Bitmap editBitmap;
     ViewPager2 fragmentViewPager;
     ToolListAdapter toolListAdapter;
     private String[] toolList;
@@ -44,6 +45,8 @@ public class ImageEditorActivity extends AppCompatActivity {
             }
 
         }
+
+        editBitmap = sourceBitmap;
 
         setPanels();
 
