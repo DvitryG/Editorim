@@ -41,7 +41,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements LoaderMan
         setContentView(R.layout.activity_image_gallery);
 
         thumbnailRecyclerView = (RecyclerView) findViewById(R.id.thumbnailRecyclerView);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         thumbnailRecyclerView.setLayoutManager(gridLayoutManager);
         mediaStoreAdapter = new MediaStoreAdapter(this);
         thumbnailRecyclerView.setAdapter(mediaStoreAdapter);
