@@ -11,12 +11,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SeekBar;
 
 
 public class ColorFiltersFragment extends Fragment {
 
-    SeekBar seekBar;
+    Button negative, sepia;
+    static Boolean fNegative = false, fSepia = false;
 
 
     @Override
@@ -24,32 +26,64 @@ public class ColorFiltersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_color_filters, container, false);
 
-        seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+        sepia = (Button) view.findViewById(R.id.sepiaFilterButton);
+        negative = (Button) view.findViewById(R.id.negativeFilterButton);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
+        sepia.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onClick(View view) {
+                if (fSepia) fSepia = false;
+                else fSepia = true;
+                fNegative = false;
                 ((ImageEditorActivity) getActivity()).updateImage();
             }
-
         });
+
+        negative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fSepia = false;
+                if (fNegative) fNegative = false;
+                else fNegative = true;
+                ((ImageEditorActivity) getActivity()).updateImage();
+            }
+        });
+
 
         return view;
     }
 
-
     public static Bitmap setFilter(Bitmap bitmap) {
+        if (fSepia) return setSepia(bitmap);
+        else if (fNegative) return setNegative(bitmap);
+        return bitmap;
+    }
+
+    private static Bitmap setNegative(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Bitmap returnBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        int colorArray[] = new int[width * height];
+        int r, g, b;
+        bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                r = 255 - Color.red(colorArray[y * width + x]);
+                g = 255 - Color.green(colorArray[y * width + x]);
+                b = 255 - Color.blue(colorArray[y * width + x]);
+
+                colorArray[y * width + x] = Color.rgb(r, g, b);
+                returnBitmap.setPixel(x, y, colorArray[y * width + x]);
+            }
+        }
+
+        return returnBitmap;
+    }
+
+    private static Bitmap setSepia(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int pixColor = 0;
