@@ -17,7 +17,7 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
 
     private Cursor mediaStoreCursor;
     private final Activity activity;
-    private  OnClickThumbListener onClickThumbListener;
+    private OnClickThumbListener onClickThumbListener;
 
 
     public interface OnClickThumbListener {
@@ -26,7 +26,7 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
 
     public MediaStoreAdapter(Activity activity) {
         this.activity = activity;
-        this.onClickThumbListener = (OnClickThumbListener)activity;
+        this.onClickThumbListener = (OnClickThumbListener) activity;
     }
 
     @NonNull
@@ -96,13 +96,13 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
         mediaStoreCursor.moveToPosition(position);
         switch (mediaStoreCursor.getInt(mediaTypeIndex)) {
             case MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE:
-                return  MediaStore.Images.Thumbnails.getThumbnail(activity.getContentResolver(), mediaStoreCursor.getLong(idIndex), MediaStore.Images.Thumbnails.MICRO_KIND, null);
+                return MediaStore.Images.Thumbnails.getThumbnail(activity.getContentResolver(), mediaStoreCursor.getLong(idIndex), MediaStore.Images.Thumbnails.MICRO_KIND, null);
             default:
                 return null;
         }
     }
 
-    private  void getOnClickUri(int position) {
+    private void getOnClickUri(int position) {
         int mediaTypeIndex = mediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE);
         int dataIndex = mediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns.DATA);
 

@@ -21,8 +21,7 @@ public class ImageEditorActivity extends AppCompatActivity {
 
     private Fragment[] fragments;
     ImageView imageView;
-    private Bitmap sourceBitmap;
-    public Bitmap editBitmap;
+    public Bitmap sourceBitmap;
     ViewPager2 fragmentViewPager;
     ToolListAdapter toolListAdapter;
     private String[] toolList;
@@ -46,8 +45,6 @@ public class ImageEditorActivity extends AppCompatActivity {
 
         }
 
-        editBitmap = sourceBitmap;
-
         setPanels();
 
         fragmentViewPager = (ViewPager2) findViewById(R.id.fragmentViewPager);
@@ -64,20 +61,20 @@ public class ImageEditorActivity extends AppCompatActivity {
     }
 
     private void setPanels() {
-        toolList = new String[] {
+        toolList = new String[]{
                 "Цветокор", "2", "3", "4", "5"
         };
+
         fragments = new Fragment[5];
         fragments[0] = new ColorFiltersFragment();
     }
 
-    public void ChangePanel (int position) {
+    public void ChangePanel(int position) {
         Fragment fragment = null;
 
         if (fragments[position] != null) {
             fragment = fragments[position];
-        }
-        else return;
+        } else return;
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -91,5 +88,13 @@ public class ImageEditorActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
         return bitmap;
+    }
+
+    public void updateImage() {
+        Bitmap bitmap = sourceBitmap;
+
+        bitmap = ColorFiltersFragment.setFilter(bitmap);
+
+        imageView.setImageBitmap(bitmap);
     }
 }

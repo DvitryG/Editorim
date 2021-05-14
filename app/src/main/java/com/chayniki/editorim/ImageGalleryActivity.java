@@ -50,27 +50,25 @@ public class ImageGalleryActivity extends AppCompatActivity implements LoaderMan
     }
 
     private void checkReadExternalStoragePermission() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 getSupportLoaderManager().initLoader(MEDIA_STORE_LOADER_ID, null, this);
-            }
-            else {
-                if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     Toast.makeText(this, "Пасибки :3", Toast.LENGTH_SHORT).show();
                 }
-                requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_PERMISSION_RESULT);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_PERMISSION_RESULT);
             }
-        }
-        else {
+        } else {
             getSupportLoaderManager().initLoader(MEDIA_STORE_LOADER_ID, null, this);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode) {
+        switch (requestCode) {
             case READ_EXTERNAL_STORAGE_PERMISSION_RESULT:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getSupportLoaderManager().initLoader(MEDIA_STORE_LOADER_ID, null, this);
                 }
                 break;
@@ -111,7 +109,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements LoaderMan
     }
 
     public void onClickTakePhoto(View view) {
-        Intent intent  = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory(), "test.jpg");
         imageUri = Uri.fromFile(file);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);

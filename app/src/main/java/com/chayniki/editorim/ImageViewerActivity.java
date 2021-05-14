@@ -46,7 +46,7 @@ public class ImageViewerActivity extends AppCompatActivity {
     }
 
     public void onClickBack(View view) {
-        Intent intent  = new Intent(this, ImageGalleryActivity.class);
+        Intent intent = new Intent(this, ImageGalleryActivity.class);
         startActivity(intent);
     }
 
