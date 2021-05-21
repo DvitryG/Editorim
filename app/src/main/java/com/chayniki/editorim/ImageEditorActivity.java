@@ -95,7 +95,7 @@ public class ImageEditorActivity extends AppCompatActivity {
         Bitmap bitmap = sourceBitmap;
 
         bitmap = ColorFiltersFragment.setFilter(bitmap);
-        //bitmap = RotateFragment.rotateImage(bitmap);
+        bitmap = RotateFragment.rotateImage(bitmap);
 
         imageView.setImageBitmap(bitmap);
     }
