@@ -62,12 +62,13 @@ public class ImageEditorActivity extends AppCompatActivity {
 
     private void setPanels() {
         toolList = new String[]{
-                "Цветокор", "Поворот", "3", "4", "5"
+                "Цветокор", "Поворот", "Маштабирование", "4", "5"
         };
 
         fragments = new Fragment[5];
         fragments[0] = new ColorFiltersFragment();
         fragments[1] = new RotateFragment();
+        fragments[2] = new ResizeFragment();
     }
 
     public void ChangePanel(int position) {
@@ -96,6 +97,7 @@ public class ImageEditorActivity extends AppCompatActivity {
 
         bitmap = ColorFiltersFragment.setFilter(bitmap);
         bitmap = RotateFragment.rotateImage(bitmap);
+        bitmap = ResizeFragment.setResize(bitmap);
 
         imageView.setImageBitmap(bitmap);
     }
