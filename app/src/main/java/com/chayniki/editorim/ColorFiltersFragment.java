@@ -18,7 +18,7 @@ import android.widget.SeekBar;
 public class ColorFiltersFragment extends Fragment {
 
     Button negative, sepia;
-    static Boolean fNegative = false, fSepia = false;
+    static int selectedFilter;
 
 
     @Override
@@ -32,9 +32,8 @@ public class ColorFiltersFragment extends Fragment {
         sepia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fSepia) fSepia = false;
-                else fSepia = true;
-                fNegative = false;
+                if (selectedFilter != 1) selectedFilter = 1;
+                else selectedFilter = 0;
                 ((ImageEditorActivity) getActivity()).updateImage();
             }
         });
@@ -42,21 +41,24 @@ public class ColorFiltersFragment extends Fragment {
         negative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fSepia = false;
-                if (fNegative) fNegative = false;
-                else fNegative = true;
+                if (selectedFilter != 2) selectedFilter = 2;
+                else selectedFilter = 0;
                 ((ImageEditorActivity) getActivity()).updateImage();
             }
         });
-
 
         return view;
     }
 
     public static Bitmap setFilter(Bitmap bitmap) {
-        if (fSepia) return setSepia(bitmap);
-        else if (fNegative) return setNegative(bitmap);
-        return bitmap;
+        switch (selectedFilter) {
+            case 1:
+                return setSepia(bitmap);
+            case 2:
+                return setNegative(bitmap);
+            default:
+                return bitmap;
+        }
     }
 
     private static Bitmap setNegative(Bitmap bitmap) {
