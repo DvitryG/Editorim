@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import java.util.Objects;
+
 
 public class ColorFiltersFragment extends Fragment {
 
-    Button negative, sepia;
+    Button negative, sepia, blackWhite, red;
     static int selectedFilter;
 
 
@@ -28,13 +30,15 @@ public class ColorFiltersFragment extends Fragment {
 
         sepia = (Button) view.findViewById(R.id.sepiaFilterButton);
         negative = (Button) view.findViewById(R.id.negativeFilterButton);
+        blackWhite = (Button) view.findViewById(R.id.blackWhiteFilterButton);
+        red = (Button) view.findViewById(R.id.redFilterButton);
 
         sepia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (selectedFilter != 1) selectedFilter = 1;
                 else selectedFilter = 0;
-                ((ImageEditorActivity) getActivity()).updateImage();
+                ((ImageEditorActivity) Objects.requireNonNull(getActivity())).updateImage();
             }
         });
 
@@ -43,7 +47,25 @@ public class ColorFiltersFragment extends Fragment {
             public void onClick(View view) {
                 if (selectedFilter != 2) selectedFilter = 2;
                 else selectedFilter = 0;
-                ((ImageEditorActivity) getActivity()).updateImage();
+                ((ImageEditorActivity) Objects.requireNonNull(getActivity())).updateImage();
+            }
+        });
+
+        blackWhite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedFilter != 3) selectedFilter = 3;
+                else selectedFilter = 0;
+                ((ImageEditorActivity) Objects.requireNonNull(getActivity())).updateImage();
+            }
+        });
+
+        red.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedFilter != 4) selectedFilter = 4;
+                else selectedFilter = 0;
+                ((ImageEditorActivity) Objects.requireNonNull(getActivity())).updateImage();
             }
         });
 
@@ -56,6 +78,10 @@ public class ColorFiltersFragment extends Fragment {
                 return setSepia(bitmap);
             case 2:
                 return setNegative(bitmap);
+            case 3:
+                return setBlackWhite(bitmap);
+            case 4:
+                return setRed(bitmap);
             default:
                 return bitmap;
         }
@@ -88,30 +114,78 @@ public class ColorFiltersFragment extends Fragment {
     private static Bitmap setSepia(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int pixColor = 0;
-        int pixR = 0;
-        int pixG = 0;
-        int pixB = 0;
-        int newR = 0;
-        int newG = 0;
-        int newB = 0;
-        int[] pixels = new int[width * height];
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-        for (int i = 0; i < height; i++) {
-            for (int k = 0; k < width; k++) {
-                pixColor = pixels[width * i + k];
-                pixR = Color.red(pixColor);
-                pixG = Color.green(pixColor);
-                pixB = Color.blue(pixColor);
-                newR = (int) (0.393 * pixR + 0.769 * pixG + 0.189 * pixB);
-                newG = (int) (0.349 * pixR + 0.686 * pixG + 0.168 * pixB);
-                newB = (int) (0.272 * pixR + 0.534 * pixG + 0.131 * pixB);
-                int newColor = Color.argb(255, newR > 255 ? 255 : newR, newG > 255 ? 255 : newG, newB > 255 ? 255 : newB);
-                pixels[width * i + k] = newColor;
+
+        Bitmap returnBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        int[] colorArray = new int[width * height];
+        int r, g, b;
+        int newR, newG, newB;
+        bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                r = Color.red(colorArray[y * width + x]);
+                g = Color.green(colorArray[y * width + x]);
+                b = Color.blue(colorArray[y * width + x]);
+
+                newR = (int) (0.393 * r + 0.769 * g + 0.189 * b);
+                newG = (int) (0.349 * r + 0.686 * g + 0.168 * b);
+                newB = (int) (0.272 * r + 0.534 * g + 0.131 * b);
+
+                colorArray[y * width + x] = Color.rgb(Math.min(newR, 255), Math.min(newG, 255), Math.min(newB, 255));
+                returnBitmap.setPixel(x, y, colorArray[y * width + x]);
             }
         }
 
-        Bitmap returnBitmap = Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888);
+        return returnBitmap;
+    }
+
+    private static Bitmap setBlackWhite(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Bitmap returnBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        int colorArray[] = new int[width * height];
+        int r, g, b;
+        bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                r = Color.red(colorArray[y * width + x]);
+                g = Color.green(colorArray[y * width + x]);
+                b = Color.blue(colorArray[y * width + x]);
+
+                int bw = (r + g + b) / 3;
+                r = bw; g = bw; b = bw;
+
+                colorArray[y * width + x] = Color.rgb(r, g, b);
+                returnBitmap.setPixel(x, y, colorArray[y * width + x]);
+            }
+        }
+
+        return returnBitmap;
+    }
+
+    private static Bitmap setRed(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Bitmap returnBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        int colorArray[] = new int[width * height];
+        int r;
+        bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                r = Color.red(colorArray[y * width + x]);
+
+                colorArray[y * width + x] = Color.rgb(r, 0, 0);
+                returnBitmap.setPixel(x, y, colorArray[y * width + x]);
+            }
+        }
+
         return returnBitmap;
     }
 }
