@@ -20,28 +20,28 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Сепия" />
+                android:text="@string/sepia" />
 
             <Button
                 android:id="@+id/negativeFilterButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Негатив" />
+                android:text="@string/negative" />
 
             <Button
                 android:id="@+id/blackWhiteFilterButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Черно-Белый" />
+                android:text="@string/blackWhite" />
 
             <Button
                 android:id="@+id/redFilterButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Красный" />
+                android:text="@string/red" />
 
         </LinearLayout>
     </HorizontalScrollView>

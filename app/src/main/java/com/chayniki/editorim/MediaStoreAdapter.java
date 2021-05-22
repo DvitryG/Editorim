@@ -17,7 +17,7 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
 
     private Cursor mediaStoreCursor;
     private final Activity activity;
-    private OnClickThumbListener onClickThumbListener;
+    private final OnClickThumbListener onClickThumbListener;
 
 
     public interface OnClickThumbListener {
@@ -94,12 +94,10 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
         int mediaTypeIndex = mediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE);
 
         mediaStoreCursor.moveToPosition(position);
-        switch (mediaStoreCursor.getInt(mediaTypeIndex)) {
-            case MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE:
-                return MediaStore.Images.Thumbnails.getThumbnail(activity.getContentResolver(), mediaStoreCursor.getLong(idIndex), MediaStore.Images.Thumbnails.MICRO_KIND, null);
-            default:
-                return null;
+        if (mediaStoreCursor.getInt(mediaTypeIndex) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
+            return MediaStore.Images.Thumbnails.getThumbnail(activity.getContentResolver(), mediaStoreCursor.getLong(idIndex), MediaStore.Images.Thumbnails.MICRO_KIND, null);
         }
+        return null;
     }
 
     private void getOnClickUri(int position) {
@@ -109,12 +107,9 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
         mediaStoreCursor.moveToPosition(position);
         String dataString = mediaStoreCursor.getString(dataIndex);
 
-        switch (mediaStoreCursor.getInt(mediaTypeIndex)) {
-            case MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE:
-                Uri imageUri = Uri.parse("file://" + dataString);
-                onClickThumbListener.onClickImage(imageUri);
-                break;
-            default:
+        if (mediaStoreCursor.getInt(mediaTypeIndex) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
+            Uri imageUri = Uri.parse("file://" + dataString);
+            onClickThumbListener.onClickImage(imageUri);
         }
     }
 }

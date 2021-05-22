@@ -35,7 +35,7 @@ public class ToolListAdapter extends RecyclerView.Adapter<ToolListAdapter.ViewHo
         return toolList.length;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
 
         public ViewHolder(@NonNull View itemView) {

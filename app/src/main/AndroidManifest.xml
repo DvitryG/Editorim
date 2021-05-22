@@ -21,9 +21,6 @@
         </activity>
         <activity android:name=".ImageEditorActivity" />
         <activity android:name=".ImageViewerActivity" />
-        <activity android:name=".MainActivity">
-
-        </activity>
     </application>
 
 </manifest>

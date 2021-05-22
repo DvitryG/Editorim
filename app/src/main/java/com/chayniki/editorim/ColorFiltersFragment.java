@@ -93,7 +93,7 @@ public class ColorFiltersFragment extends Fragment {
 
         Bitmap returnBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
-        int colorArray[] = new int[width * height];
+        int[] colorArray = new int[width * height];
         int r, g, b;
         bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
 
@@ -146,7 +146,7 @@ public class ColorFiltersFragment extends Fragment {
 
         Bitmap returnBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
-        int colorArray[] = new int[width * height];
+        int[] colorArray = new int[width * height];
         int r, g, b;
         bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
 
@@ -157,7 +157,9 @@ public class ColorFiltersFragment extends Fragment {
                 b = Color.blue(colorArray[y * width + x]);
 
                 int bw = (r + g + b) / 3;
-                r = bw; g = bw; b = bw;
+                r = bw;
+                g = bw;
+                b = bw;
 
                 colorArray[y * width + x] = Color.rgb(r, g, b);
                 returnBitmap.setPixel(x, y, colorArray[y * width + x]);
@@ -173,7 +175,7 @@ public class ColorFiltersFragment extends Fragment {
 
         Bitmap returnBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
-        int colorArray[] = new int[width * height];
+        int[] colorArray = new int[width * height];
         int r;
         bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
 

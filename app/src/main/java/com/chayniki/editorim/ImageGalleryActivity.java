@@ -31,7 +31,6 @@ public class ImageGalleryActivity extends AppCompatActivity implements LoaderMan
     private final static int READ_EXTERNAL_STORAGE_PERMISSION_RESULT = 0;
     private final static int MEDIA_STORE_LOADER_ID = 0;
     private final static int REQUEST_CODE_PHOTO = 0;
-    private RecyclerView thumbnailRecyclerView;
     private MediaStoreAdapter mediaStoreAdapter;
     Uri imageUri;
 
@@ -40,7 +39,7 @@ public class ImageGalleryActivity extends AppCompatActivity implements LoaderMan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_gallery);
 
-        thumbnailRecyclerView = (RecyclerView) findViewById(R.id.thumbnailRecyclerView);
+        RecyclerView thumbnailRecyclerView = (RecyclerView) findViewById(R.id.thumbnailRecyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         thumbnailRecyclerView.setLayoutManager(gridLayoutManager);
         mediaStoreAdapter = new MediaStoreAdapter(this);
@@ -66,14 +65,12 @@ public class ImageGalleryActivity extends AppCompatActivity implements LoaderMan
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case READ_EXTERNAL_STORAGE_PERMISSION_RESULT:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getSupportLoaderManager().initLoader(MEDIA_STORE_LOADER_ID, null, this);
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_RESULT) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getSupportLoaderManager().initLoader(MEDIA_STORE_LOADER_ID, null, this);
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

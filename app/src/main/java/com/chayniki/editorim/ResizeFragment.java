@@ -12,24 +12,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
+import java.util.Objects;
 
 public class ResizeFragment extends Fragment {
 
     static int zoomValue = 1;
     static boolean upOrDown = false;
+    SeekBar zoomSeekBar;
+    TextView resizeT;
+    double num = 0;
+    double numMinus = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_resize, container, false);
 
-        SeekBar zoomSeekBar = (SeekBar) view.findViewById(R.id.zoomSeekBar);
-
-        //zoomValue = 1;
-        //upOrDown = false;
+        zoomSeekBar = (SeekBar) view.findViewById(R.id.zoomSeekBar);
+        resizeT = (TextView) view.findViewById(R.id.resizeText);
+        resizeT.setText("" + 1 + "x");
 
         zoomSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -39,10 +45,25 @@ public class ResizeFragment extends Fragment {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-                zoomValue = 4;
-                upOrDown = false;
-                ((ImageEditorActivity) getActivity()).updateImage();
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                num = progress - 5;
+
+                if (num < 0) --num;
+                else ++num;
+
+                zoomValue = (int) Math.abs(num);
+
+                if (num < 0) {
+                    upOrDown = false;
+                    String numMinus = String.format("%.2f", -1 / num);
+                    resizeT.setText("" + numMinus + "x");
+                }
+                if (num > 0) {
+                    upOrDown = true;
+                    resizeT.setText("" + num + "x");
+                }
+
+                ((ImageEditorActivity) Objects.requireNonNull(getActivity())).updateImage();
             }
         });
 
@@ -52,11 +73,9 @@ public class ResizeFragment extends Fragment {
     public static Bitmap setResize(Bitmap bitmap) {
         if (zoomValue == 1) {
             return bitmap;
-        }
-        else if (upOrDown) {
+        } else if (upOrDown) {
             return zoomUp(bitmap);
-        }
-        else {
+        } else {
             return zoomDown(bitmap);
         }
     }
@@ -67,7 +86,7 @@ public class ResizeFragment extends Fragment {
 
         Bitmap returnBitmap = Bitmap.createBitmap(width * zoomValue, height * zoomValue, Bitmap.Config.RGB_565);
 
-        int colorArray[] = new int[width * height];
+        int[] colorArray = new int[width * height];
         int r, g, b;
         bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
 
@@ -97,13 +116,15 @@ public class ResizeFragment extends Fragment {
 
         Bitmap returnBitmap = Bitmap.createBitmap(pWidth, pHeight, Bitmap.Config.RGB_565);
 
-        int colorArray[] = new int[width * height];
+        int[] colorArray = new int[width * height];
         int r, g, b;
         bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
 
         for (int x = 0; x < returnBitmap.getWidth(); ++x) {
             for (int y = 0; y < returnBitmap.getHeight(); ++y) {
-                r = 0; g = 0; b = 0;
+                r = 0;
+                g = 0;
+                b = 0;
                 int count = 0;
 
                 for (int i = 0; i < zoomValue; ++i) {

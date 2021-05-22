@@ -10,7 +10,6 @@
         android:id="@+id/toolName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="..."
         android:textColor="@color/white"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -9,13 +9,21 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ImageEditorActivity extends AppCompatActivity {
 
@@ -25,6 +33,7 @@ public class ImageEditorActivity extends AppCompatActivity {
     ViewPager2 fragmentViewPager;
     ToolListAdapter toolListAdapter;
     private String[] toolList;
+    Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +44,7 @@ public class ImageEditorActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            Uri imageUri = Uri.parse(intent.getStringExtra("imageUri"));
+            imageUri = Uri.parse(intent.getStringExtra("imageUri"));
             try {
                 sourceBitmap = getBitmapFromUri(imageUri);
                 imageView.setImageBitmap(sourceBitmap);
@@ -62,10 +71,10 @@ public class ImageEditorActivity extends AppCompatActivity {
 
     private void setPanels() {
         toolList = new String[]{
-                "Цветокор", "Поворот", "Маштабирование", "4", "5"
+                "Цветокор", "Поворот", "Маштабирование"
         };
 
-        fragments = new Fragment[5];
+        fragments = new Fragment[3];
         fragments[0] = new ColorFiltersFragment();
         fragments[1] = new RotateFragment();
         fragments[2] = new ResizeFragment();
@@ -100,5 +109,41 @@ public class ImageEditorActivity extends AppCompatActivity {
         bitmap = ResizeFragment.setResize(bitmap);
 
         imageView.setImageBitmap(bitmap);
+    }
+
+    public void onClickBack(View view) {
+        Intent intent = new Intent(this, ImageViewerActivity.class);
+        intent.putExtra("imageUri", imageUri.toString());
+        startActivity(intent);
+    }
+
+    public void onClickSaveImage(View view) {
+        Bitmap finalBitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        saveImage(finalBitmap);
+        Intent intent = new Intent(this, ImageGalleryActivity.class);
+        startActivity(intent);
+    }
+
+    private void saveImage(Bitmap finalBitmap) {
+
+        Date dateNow = new Date();
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd'-'hh:mm:ss");
+        String image_name = formatForDateNow.format(dateNow);
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root);
+        myDir.mkdirs();
+        String fName = "Image-" + image_name+ ".jpg";
+        File file = new File(myDir, fName);
+        if (file.exists()) file.delete();
+        Log.i("LOAD", root + fName);
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
