@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Editorim</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back">Назад</string>
+    <string name="edit">Редактировать</string>
+    <string name="sepia">Сепия</string>
+    <string name="negative">Негатив</string>
+    <string name="blackWhite">Черно-Белый</string>
+    <string name="red">Красный</string>
+    <string name="save">Сохранить</string>
 </resources>
