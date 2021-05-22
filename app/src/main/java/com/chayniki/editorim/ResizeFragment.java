@@ -70,6 +70,8 @@ public class ResizeFragment extends Fragment {
         return view;
     }
 
+
+
     public static Bitmap setResize(Bitmap bitmap) {
         if (zoomValue == 1) {
             return bitmap;

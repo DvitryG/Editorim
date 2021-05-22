@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.Objects;
 
 public class ColorFiltersFragment extends Fragment {
 
-    Button negative, sepia, blackWhite, red;
+    ImageButton negative, sepia, blackWhite, red;
     static int selectedFilter;
 
 
@@ -28,10 +29,10 @@ public class ColorFiltersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_color_filters, container, false);
 
-        sepia = (Button) view.findViewById(R.id.sepiaFilterButton);
-        negative = (Button) view.findViewById(R.id.negativeFilterButton);
-        blackWhite = (Button) view.findViewById(R.id.blackWhiteFilterButton);
-        red = (Button) view.findViewById(R.id.redFilterButton);
+        sepia = (ImageButton) view.findViewById(R.id.sepiaFilterButton);
+        negative = (ImageButton) view.findViewById(R.id.negativeFilterButton);
+        blackWhite = (ImageButton) view.findViewById(R.id.blackWhiteFilterButton);
+        red = (ImageButton) view.findViewById(R.id.redFilterButton);
 
         sepia.setOnClickListener(new View.OnClickListener() {
             @Override
