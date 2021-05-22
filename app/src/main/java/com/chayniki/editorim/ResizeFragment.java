@@ -146,13 +146,10 @@ public class ResizeFragment extends Fragment {
                     b /= count;
                 }
 
-                //colorArray[parentY * width + parentX] = Color.rgb(r, g, b);
                 returnBitmap.setPixel(x, y, Color.rgb(r, g, b));
             }
         }
 
         return returnBitmap;
-
-        //return bitmap;
     }
 }
