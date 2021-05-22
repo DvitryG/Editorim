@@ -71,7 +71,7 @@ public class ImageEditorActivity extends AppCompatActivity {
 
     private void setPanels() {
         toolList = new String[]{
-                "Цветокор", "Поворот", "Маштабирование"
+                "Цветокоррекция", "Поворот", "Масштабирование"
         };
 
         fragments = new Fragment[3];

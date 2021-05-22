@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/test"
     android:layout_width="match_parent"
@@ -15,33 +16,37 @@
             android:layout_height="match_parent"
             android:orientation="horizontal" >
 
-            <Button
+            <ImageButton
                 android:id="@+id/sepiaFilterButton"
-                android:layout_width="0dp"
+                android:layout_width="90dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/sepia" />
+                android:src="@drawable/__ykwvn"
+                android:backgroundTint="#333333"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/negativeFilterButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/negative" />
+                android:src="@drawable/__a35b7"
+                android:backgroundTint="#333333"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/blackWhiteFilterButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/blackWhite" />
+                android:backgroundTint="#333333"
+                android:src="@drawable/__heojz" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/redFilterButton"
-                android:layout_width="0dp"
+                android:layout_width="90dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/red" />
+                android:backgroundTint="#333333"
+                android:src="@drawable/__5wnun" />
 
         </LinearLayout>
     </HorizontalScrollView>

@@ -72,6 +72,17 @@ public class RotateFragment extends Fragment {
     }
 
     public static Bitmap rotateImage(Bitmap bitmap) {
+        if (rotationAngle >= -90 && rotationAngle <= 90) {
+            return rotateByAngle(bitmap, rotationAngle);
+        }
+        else {
+            bitmap = rotateByAngle(bitmap, 180 - rotationAngle);
+            bitmap = flipImage(bitmap);
+            return bitmap;
+        }
+    }
+
+    static Bitmap rotateByAngle (Bitmap bitmap, int rotationAngle) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
@@ -122,4 +133,27 @@ public class RotateFragment extends Fragment {
         return returnBitmap;
     }
 
+    static Bitmap flipImage(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Bitmap returnBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        int[] colorArray = new int[width * height];
+        int r, g, b;
+        bitmap.getPixels(colorArray, 0, width, 0, 0, width, height);
+
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                r = Color.red(colorArray[y * width + x]);
+                g = Color.green(colorArray[y * width + x]);
+                b = Color.blue(colorArray[y * width + x]);
+
+                colorArray[y * width + x] = Color.rgb(r, g, b);
+                returnBitmap.setPixel(width - 1 - x, height - 1 - y, colorArray[y * width + x]);
+            }
+        }
+
+        return returnBitmap;
+    }
 }
